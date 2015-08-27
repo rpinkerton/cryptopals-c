@@ -1,17 +1,20 @@
 /* util.c - utility functions for cryptopals */
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "util.h"
 
 char *hex_to_b64(char *hex_str, int length) {
     byte *data = decode_hex(hex_str, length);
     char *b64 = encode_b64(data, length / 2);
+    free(data);
     return b64;
 }
 
 char *b64_to_hex(char *b64_str, int length) {
     byte *data = decode_b64(b64_str, length);
     char *hex = encode_hex(data, 3 * length / 4);
+    free(data);
     return hex;
 }
 
@@ -42,7 +45,7 @@ char int_to_hex_char(int val) {
         hex_char = (char) (val + 48);
     }
     else if (10 <= val && val <= 15) {
-        hex_char = (char) (val + 55);
+        hex_char = (char) (val + 87);
     }
     else {
         hex_char = (char) 0;
@@ -181,4 +184,11 @@ char *encode_b64(byte *data, int length) {
     }
 
     return b64_str;
+}
+
+char *as_string(byte *data, int length) {
+  char *str = malloc((length + 1) * sizeof(char));
+  memcpy(str, data, length);
+  str[length] = 0;
+  return str;
 }

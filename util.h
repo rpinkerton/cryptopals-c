@@ -1,4 +1,6 @@
 /* util.h - header for cryptopals utility functions */
+#ifndef UTIL_H
+#define UTIL_H
 
 typedef unsigned char byte;
 
@@ -11,3 +13,8 @@ byte *decode_hex(char *hex_str, int length);
 byte *decode_b64(char *b64_str, int length);
 char *encode_hex(byte *data, int length);
 char *encode_b64(byte *data, int length);
+
+/* Reading from byte arrays */
+char *as_string(byte *data, int length);
+
+#endif

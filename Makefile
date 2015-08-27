@@ -1,4 +1,4 @@
-CFILES := set1.c util.c
+CFILES := set1.c util.c cipher.c
 PROG := set1
 CFLAGS := -Wall -Wextra -g
 LDFLAGS :=
