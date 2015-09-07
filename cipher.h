@@ -2,3 +2,4 @@
 #include "util.h"
 
 byte *fixed_xor(byte *buf1, byte *buf2, int len);
+byte *single_xor(byte *buf, byte key, int len);
