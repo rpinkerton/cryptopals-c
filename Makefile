@@ -1,19 +1,16 @@
 CFILES := set1.c util.c cipher.c frequency.c
 PROG := set1
-CFLAGS := -Wall -Wextra -g
-LDFLAGS :=
+CFLAGS := -Wall -Wextra -g -std=c99
+LDFLAGS := -lm
 
-# -MMD generates dependencies while compiling
-CFLAGS += -MMD
 CC := gcc
 
 OBJFILES := $(CFILES:.c=.o)
-DEPFILES := $(CFILES:.c=.d)
 
 $(PROG) : $(OBJFILES)
-	$(LINK.o) $(LDFLAGS) -o $@ $^
+	$(LINK.o) -o $@ $^ $(LDFLAGS)
 
 clean :
-	rm -f $(PROG) $(OBJFILES) $(DEPFILES)
+	rm -f $(PROG) $(OBJFILES)
 
 -include $(DEPFILES)

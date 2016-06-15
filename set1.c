@@ -63,42 +63,44 @@ void test_ch3() {
     printf("~~Testing challenge 3~~\n");
 
     char *chex = "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736";
-    int chexlen = strlen(chex);
-
-    byte *cbytes = decode_hex(chex, chexlen);
-
-    /* Way bigger than any possible score from freq analysis */
-    double best = 1000;
-    char best_key;
-    char *best_text = malloc(sizeof(char));
-    for (int key = 0; key < 256; key++) {
-        byte *dec_bytes = single_xor(cbytes, (char) key, chexlen / 2);
-        char *dec_text = as_string(dec_bytes, chexlen / 2);
-        double score = fa_score(dec_text);
-        
-        if (score < best && (int) strlen(dec_text) == chexlen / 2) {
-            free(best_text);
-            best = score;
-            best_key = (char) key;
-            best_text = dec_text;
-        }
-        else {
-            free(dec_text);
-        }
-        
-        free(dec_bytes);
-    }
+    char *best_text = single_xor_decode(chex);
 
     printf("Decoded message is: %s\n", best_text);
-    printf("Key was: %c\n", best_key);
 
-    free(cbytes);
     free(best_text);
+}
+
+void test_ch4() {
+    printf("~~Testing challenge 4~~\n");
+
+    FILE *hex_lines = fopen("4.txt", "r");
+    char *line = malloc(sizeof(char) * 100);
+    char *decoded_line;
+    char *best_line;
+    double best_score = 1000;
+
+    while (fgets(line, 100, hex_lines) != NULL) {
+        strtok(line, "\n");
+        decoded_line = single_xor_decode(line);
+        if (fa_score(decoded_line) < best_score) {
+            best_line = decoded_line;
+            best_score = fa_score(decoded_line);
+        }
+        else {
+            free(decoded_line);
+        }
+    }
+
+    printf("Found decoded message is: %s", best_line);
+
+    free(line);
+    free(best_line);
 }
 
 int main() {
     test_ch1();
     test_ch2();
     test_ch3();
+    test_ch4();
     return 0;
 }
